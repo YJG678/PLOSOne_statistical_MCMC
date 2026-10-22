@@ -1,0 +1,4 @@
+setting,combined_winner,batch_1_winner,batch_2_winner,best_risk,second_best,second_best_risk,best_second_gap,gap_mcse,gap_z_score,oracle_resolved
+B1,transport_independence,transport_independence,transport_independence,0.0003168804511878375,parallel_tempering,0.0013158818578270974,0.0009990014066392598,1.3503480879194384e-05,73.98102871226935,True
+B2,transport_independence,transport_independence,transport_independence,0.00013604912039924755,parallel_tempering,0.0008865319361305401,0.0007504828157312926,1.2463359772525777e-05,60.21512894024423,True
+B3,transport_independence,transport_independence,transport_independence,3.0014411858117202e-05,parallel_tempering,0.00038915246545083855,0.00035913805359272136,1.7855315271758404e-05,20.113789542588858,True

@@ -1,0 +1,1234 @@
+% Stage 2 mathematical core.
+% This file is designed to be included after amsmath, amssymb, amsthm,
+% mathtools, booktabs, and enumitem have been loaded.
+
+\section{Finite-horizon reliability before sampler selection}
+\label{sec:stage2-mathematical-core}
+
+Throughout this section, \(h\) is fixed and \(\pi_h\) denotes the declared
+discrete posterior.  The candidate library \(\mathcal A\), the estimands
+\(f_1,\ldots,f_R\), the initialization laws \(\nu_a\), and all numerical
+thresholds are frozen before the streams considered below are generated.  A
+statement about a stationary long-run variance will always say explicitly
+that the chain is stationary.  Every other statement is finite-horizon and
+retains its initialization law.
+
+\subsection{Finite-horizon risk objects}
+\label{subsec:stage2-risk}
+
+For candidate \(a\), let \(P_a\) be a Markov kernel with invariant measure
+\(\pi_h\), let \(X_0\sim\nu_a\), and define
+\begin{equation}
+ \widehat\mu_{a,r,n}
+ =
+ \frac1n\sum_{k=0}^{n-1} f_r(X_k),
+ \qquad
+ \mu_r=\pi_h(f_r).
+ \label{eq:s2-estimator}
+\end{equation}
+Whenever \(f_r(X_k)\) is square integrable under the finite path law, set
+\begin{align}
+ D_{a,r}(n)
+ &=
+ n\,\operatorname{Var}_{\nu_a}(\widehat\mu_{a,r,n}),
+ \label{eq:s2-dispersion}\\
+ R_{a,r}(n)
+ &=
+ n\,\mathbb E_{\nu_a}
+ \left[
+  \{\widehat\mu_{a,r,n}-\mu_r\}^2
+ \right],
+ \label{eq:s2-risk}\\
+ B_{a,r}(n)
+ &=
+ \mathbb E_{\nu_a}[\widehat\mu_{a,r,n}]-\mu_r.
+ \label{eq:s2-bias}
+\end{align}
+
+\begin{proposition}[Finite-horizon bias--variance identity]
+\label{prop:s2-bias-variance}
+For every \(a,r,n\) for which the preceding quantities are finite,
+\begin{equation}
+ R_{a,r}(n)
+ =
+ D_{a,r}(n)+nB_{a,r}(n)^2.
+ \label{eq:s2-bias-variance}
+\end{equation}
+No stationarity or unbiasedness assumption is required.
+\end{proposition}
+
+\begin{proof}
+Put \(Y=\widehat\mu_{a,r,n}\).  The elementary identity
+\[
+ \mathbb E_{\nu_a}\{(Y-\mu_r)^2\}
+ =
+ \operatorname{Var}_{\nu_a}(Y)
+ +
+ \{\mathbb E_{\nu_a}Y-\mu_r\}^2
+\]
+follows by writing \(Y-\mu_r=(Y-\mathbb E_{\nu_a}Y)
++(\mathbb E_{\nu_a}Y-\mu_r)\) and observing that the cross term has mean zero.
+Multiplication by \(n\) gives \eqref{eq:s2-bias-variance}.
+\end{proof}
+
+\begin{proposition}[Two-estimator disagreement]
+\label{prop:s2-disagreement}
+Let \(U,V\in L^2\) estimate a common scalar target \(\mu\).  Then
+\begin{equation}
+ \max\{\mathbb E(U-\mu)^2,\mathbb E(V-\mu)^2\}
+ \geq
+ \frac14\{\mathbb E U-\mathbb E V\}^2.
+ \label{eq:s2-disagreement}
+\end{equation}
+If \(U\) and \(V\) are horizon-\(n\) estimators, the same statement multiplied
+by \(n\) holds for their scaled finite-horizon risks.
+\end{proposition}
+
+\begin{proof}
+Let \(b_U=\mathbb E U-\mu\) and \(b_V=\mathbb E V-\mu\).  By the triangle
+inequality and the fact that squared bias does not exceed mean-squared error,
+\[
+ |\mathbb E U-\mathbb E V|
+ \leq |b_U|+|b_V|
+ \leq
+ 2\sqrt{\max\{\mathbb E(U-\mu)^2,\mathbb E(V-\mu)^2\}}.
+\]
+Squaring proves the claim.
+\end{proof}
+
+\subsection{Finite-path non-identifiability under metastability}
+\label{subsec:stage2-nonidentifiability}
+
+For \(p\in(0,1)\) and \(\varepsilon\in(0,1]\), consider
+\begin{equation}
+ P_{p,\varepsilon}
+ =
+ \begin{pmatrix}
+  1-\varepsilon p & \varepsilon p\\
+  \varepsilon(1-p) & 1-\varepsilon(1-p)
+ \end{pmatrix}.
+ \label{eq:s2-two-state}
+\end{equation}
+Its invariant distribution is
+\(\pi_p=(1-p,p)\), and detailed balance follows from
+\((1-p)\varepsilon p=p\varepsilon(1-p)\).
+
+\begin{theorem}[Exact finite-path false precision]
+\label{thm:s2-false-precision}
+Run \(L\) independent copies of \eqref{eq:s2-two-state}, all initialized at
+zero, and observe each for \(n\) transitions.  Let
+\[
+ \mathcal N_{L,n}
+ =
+ \{\text{none of the \(L\) chains visits state \(1\) during the \(n\)
+ transitions}\}.
+\]
+Then
+\begin{equation}
+ \mathbb P_{p,\varepsilon}(\mathcal N_{L,n})
+ =
+ (1-\varepsilon p)^{Ln}.
+ \label{eq:s2-no-visit}
+\end{equation}
+On \(\mathcal N_{L,n}\), every replicate estimate of
+\(\pi_p(\{1\})=p\) is zero.  Hence the empirical variance across replicates is
+exactly zero, while every replicate has absolute error \(p\) and squared error
+\(p^2\).
+\end{theorem}
+
+\begin{proof}
+A chain that is currently at zero remains there with probability
+\(1-\varepsilon p\).  Starting from zero, it avoids state one for all \(n\)
+transitions with probability \((1-\varepsilon p)^n\).  Independence of the
+\(L\) paths gives \eqref{eq:s2-no-visit}.  On this event all recorded states
+are zero, so every empirical mean of the indicator \(f(x)=\mathbf 1\{x=1\}\)
+equals zero.  The remaining conclusions are immediate.
+\end{proof}
+
+\begin{corollary}[False precision with arbitrarily high probability]
+\label{cor:s2-arbitrary-false-precision}
+Fix \(p\in(0,1)\), \(L,n\geq1\), and \(\alpha\in(0,1)\).  If
+\begin{equation}
+ 0<\varepsilon
+ \leq
+ \min\left\{
+  1,\,
+  \frac{1-(1-\alpha)^{1/(Ln)}}{p}
+ \right\},
+ \label{eq:s2-epsilon-choice}
+\end{equation}
+then
+\(\mathbb P_{p,\varepsilon}(\mathcal N_{L,n})\geq1-\alpha\).
+Thus zero empirical dispersion can occur with probability as close to one as
+desired while the error remains exactly \(p\).
+\end{corollary}
+
+\begin{proof}
+The choice \eqref{eq:s2-epsilon-choice} implies
+\(1-\varepsilon p\geq(1-\alpha)^{1/(Ln)}\).  Apply
+\eqref{eq:s2-no-visit}.
+\end{proof}
+
+For the information-theoretic statement, let
+\(\mathbb Q_{p,\varepsilon}^{L,n}\) denote the joint law of the \(L\) observed
+paths, including the deterministic initial zero.  We use
+\(\|\cdot\|_{\mathrm{TV}}=\sup_A|\mathbb Q(A)-\mathbb Q'(A)|\).
+
+\begin{theorem}[Finite-path indistinguishability]
+\label{thm:s2-indistinguishability}
+Let \(0<p_0<p_1<1\), let \(\Delta=p_1-p_0\), and use the same
+\(\varepsilon\in(0,1]\) for both chains.  Then
+\begin{equation}
+ \left\|
+  \mathbb Q_{p_0,\varepsilon}^{L,n}
+  -
+  \mathbb Q_{p_1,\varepsilon}^{L,n}
+ \right\|_{\mathrm{TV}}
+ \leq
+ 1-(1-\varepsilon p_1)^{Ln}
+ \leq
+ Ln\varepsilon p_1.
+ \label{eq:s2-path-tv}
+\end{equation}
+Consequently, for every path-measurable estimator \(T\) of the target event
+probability,
+\begin{equation}
+ \max_{i\in\{0,1\}}
+ \mathbb Q_{p_i,\varepsilon}^{L,n}
+ \left\{
+  |T-p_i|\geq\frac{\Delta}{2}
+ \right\}
+ \geq
+ \frac12
+ \left(
+  1-
+  \left\|
+   \mathbb Q_{p_0,\varepsilon}^{L,n}
+   -
+   \mathbb Q_{p_1,\varepsilon}^{L,n}
+  \right\|_{\mathrm{TV}}
+ \right).
+ \label{eq:s2-le-cam}
+\end{equation}
+In particular, take \(p_0=1/4\), \(p_1=3/4\), and any
+\(\eta\in(0,1)\).  If
+\[
+ \varepsilon
+ \leq
+ \min\left\{1,\frac{\eta}{Ln p_1}\right\},
+\]
+then the two length-\(n\) experiments have total variation distance at most
+\(\eta\), although their target event probabilities differ by \(1/2\), and
+the right side of \eqref{eq:s2-le-cam} is at least
+\((1-\eta)/2\).
+\end{theorem}
+
+\begin{proof}
+Let \(x_\circ\) be the joint observation in which every recorded state of every
+chain is zero.  Under parameter \(p_i\),
+\[
+ \mathbb Q_{p_i,\varepsilon}^{L,n}(\{x_\circ\})
+ =
+ (1-\varepsilon p_i)^{Ln}.
+\]
+For probability measures on a countable sample space,
+\(\|Q-Q'\|_{\mathrm{TV}}=1-\sum_x\min\{Q(x),Q'(x)\}\).  Retaining only the
+common atom \(x_\circ\) in this sum and using \(p_0<p_1\) gives
+\[
+ \| \mathbb Q_{p_0,\varepsilon}^{L,n}
+      -\mathbb Q_{p_1,\varepsilon}^{L,n}\|_{\mathrm{TV}}
+ \leq
+ 1-(1-\varepsilon p_1)^{Ln}.
+\]
+Bernoulli's inequality \(1-(1-x)^m\leq mx\), for \(x\in[0,1]\), proves the
+second bound in \eqref{eq:s2-path-tv}.
+
+To prove \eqref{eq:s2-le-cam}, form the test
+\(\phi=\mathbf 1\{T\geq(p_0+p_1)/2\}\).  If
+\(|T-p_0|<\Delta/2\), then \(\phi=0\), and if
+\(|T-p_1|<\Delta/2\), then \(\phi=1\).  Hence
+\[
+ \mathbb Q_{p_0,\varepsilon}^{L,n}
+ \{|T-p_0|\geq\Delta/2\}
+ +
+ \mathbb Q_{p_1,\varepsilon}^{L,n}
+ \{|T-p_1|\geq\Delta/2\}
+ \geq
+ \mathbb Q_{p_0,\varepsilon}^{L,n}(\phi=1)
+ +
+ \mathbb Q_{p_1,\varepsilon}^{L,n}(\phi=0).
+\]
+The sum of the two testing errors is at least one minus the total variation
+distance.  At least one estimation error probability is therefore at least
+half that quantity.  The numerical specialization follows from
+\eqref{eq:s2-path-tv}.
+\end{proof}
+
+\begin{corollary}[No uniformly reliable nontrivial finite-path certificate]
+\label{cor:s2-no-certificate}
+In the setting of Theorem~\ref{thm:s2-indistinguishability}, fix
+\(\tau<\Delta/2\).  Let \(C\) be the event that a path-measurable diagnostic
+certifies an estimator \(T\).  Suppose, for both \(i=0,1\),
+\begin{align}
+ \mathbb Q_{p_i,\varepsilon}^{L,n}(C)
+ &\geq 1-\beta,
+ \label{eq:s2-cert-power}\\
+ \mathbb Q_{p_i,\varepsilon}^{L,n}
+ \{C\cap(|T-p_i|>\tau)\}
+ &\leq\alpha.
+ \label{eq:s2-cert-error}
+\end{align}
+Then
+\begin{equation}
+ \alpha+\beta
+ \geq
+ \frac12
+ \left(
+  1-
+  \left\|
+   \mathbb Q_{p_0,\varepsilon}^{L,n}
+   -
+   \mathbb Q_{p_1,\varepsilon}^{L,n}
+  \right\|_{\mathrm{TV}}
+ \right).
+ \label{eq:s2-cert-impossibility}
+\end{equation}
+Thus, when the path laws are close, a uniformly low false-certification
+probability forces a substantial abstention probability.  Acceptance,
+effective sample size, replicate dispersion, or any other statistic measurable
+from the same finite paths cannot evade this conclusion without additional
+structural assumptions.
+\end{corollary}
+
+\begin{proof}
+For each \(i\),
+\[
+ \mathbb Q_{p_i,\varepsilon}^{L,n}(|T-p_i|>\tau)
+ \leq
+ \mathbb Q_{p_i,\varepsilon}^{L,n}(C^c)
+ +
+ \mathbb Q_{p_i,\varepsilon}^{L,n}
+ \{C\cap(|T-p_i|>\tau)\}
+ \leq\alpha+\beta.
+\]
+Apply the Le Cam bound \eqref{eq:s2-le-cam}; replacing
+\(\Delta/2\) by the smaller tolerance \(\tau\) can only increase the error
+event.
+\end{proof}
+
+\subsection{Exact rare-mode proxy failure}
+\label{subsec:stage2-proxy}
+
+Let \(\mathsf M_A,\mathsf M_B\) be disjoint, let \(\pi_A,\pi_B\) be
+probability measures supported on the respective sets, and define
+\begin{equation}
+ \pi_p=(1-p)\pi_A+p\pi_B,
+ \qquad
+ q_w=(1-w)\pi_A+w\pi_B,
+ \qquad
+ 0<w<p<1.
+ \label{eq:s2-mode-mixtures}
+\end{equation}
+
+\begin{theorem}[Rare-mode proxy formulas]
+\label{thm:s2-proxy}
+Let \(P_w\) be the independence Metropolis--Hastings kernel with target
+\(\pi_p\), proposal \(q_w\), and stationary initialization.  Then
+\begin{align}
+ \operatorname{Acc}(p,w)
+ &=
+ 1-p+w,
+ \label{eq:s2-acceptance}\\
+ \sigma_{P_w}^2(\mathbf 1_{\mathsf M_B})
+ &=
+ p(1-p)\left(\frac{2p}{w}-1\right),
+ \label{eq:s2-proxy-lrv}\\
+ D_{\mathrm{KL}}(q_w\Vert\pi_p)
+ &=
+ (1-w)\log\frac{1-w}{1-p}
+ +
+ w\log\frac{w}{p}.
+ \label{eq:s2-reverse-kl}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The importance ratio \(\pi_p/q_w\) is \((1-p)/(1-w)\) on
+\(\mathsf M_A\) and \(p/w\) on \(\mathsf M_B\).  Because \(w<p\), proposals
+within a mode and proposals from \(\mathsf M_A\) to \(\mathsf M_B\) are
+accepted.  A proposal from \(\mathsf M_B\) to \(\mathsf M_A\) is accepted with
+probability \(w(1-p)/\{p(1-w)\}\).  The induced two-state mode chain therefore
+has
+\[
+ P_w(A,B)=w,
+ \qquad
+ P_w(B,A)=\frac{w(1-p)}p,
+\]
+stationary probability \(p\) for \(B\), and nonconstant eigenvalue
+\(\lambda_w=1-w/p\).  Conditional acceptance is one in mode \(A\) and
+\(w/p\) in mode \(B\), proving \eqref{eq:s2-acceptance}.
+
+For \(g=\mathbf 1_{\mathsf M_B}-p\),
+\[
+ \operatorname{Cov}_{\pi_p}\{g(X_0),g(X_k)\}
+ =
+ p(1-p)\lambda_w^k.
+\]
+Since \(0<\lambda_w<1\), summing the stationary covariance series gives
+\[
+ \sigma_{P_w}^2(\mathbf 1_{\mathsf M_B})
+ =
+ p(1-p)
+ \left\{1+2\sum_{k=1}^{\infty}\lambda_w^k\right\}
+ =
+ p(1-p)\frac{1+\lambda_w}{1-\lambda_w},
+\]
+which simplifies to \eqref{eq:s2-proxy-lrv}.  Finally,
+\eqref{eq:s2-reverse-kl} is obtained by integrating
+\(\log(dq_w/d\pi_p)\) under \(q_w\).
+\end{proof}
+
+\begin{corollary}[Precise favourable-proxy limits]
+\label{cor:s2-proxy-limits}
+Let \(p_j\downarrow0\) and \(0<w_j<p_j\).
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item If \(w_j/p_j\to0\), then
+\[
+ \operatorname{Acc}(p_j,w_j)\to1,
+ \qquad
+ D_{\mathrm{KL}}(q_{w_j}\Vert\pi_{p_j})\to0,
+ \qquad
+ \frac{\sigma_{P_{w_j}}^2(\mathbf 1_{\mathsf M_B})}
+      {p_j(1-p_j)}
+ =
+ \frac{2p_j}{w_j}-1
+ \to\infty.
+\]
+\item If, in addition, \(w_j/p_j^2\to0\), then the absolute LRV diverges:
+\[
+ \sigma_{P_{w_j}}^2(\mathbf 1_{\mathsf M_B})\to\infty.
+\]
+For example, \(w_j=p_j^3\) satisfies all of these conclusions.
+\end{enumerate}
+For fixed \(p>0\), in contrast, \(w\downarrow0\) gives acceptance
+\(1-p\) and reverse KL \(-\log(1-p)\), not one and zero.  Exact reverse-KL
+minimization over \(w\in[0,1]\) still has the correct minimizer \(w=p\).
+\end{corollary}
+
+\begin{proof}
+The acceptance and relative-LRV limits follow directly from
+\eqref{eq:s2-acceptance} and \eqref{eq:s2-proxy-lrv}.  For reverse KL, the
+first term in \eqref{eq:s2-reverse-kl} converges to zero.  The second also
+converges to zero: because \(0<w_j<p_j<1\),
+\[
+ 0\leq -w_j\log(w_j/p_j)
+ \leq -w_j\log w_j\longrightarrow0.
+\]
+Nonnegativity of KL then yields the claimed limit.  Finally,
+\[
+ \sigma_{P_{w_j}}^2(\mathbf 1_{\mathsf M_B})
+ =
+ 2(1-p_j)\frac{p_j^2}{w_j}-p_j(1-p_j),
+\]
+which diverges when \(w_j/p_j^2\to0\).  The final statements follow by direct
+calculation and strict convexity of the Bernoulli KL divergence.
+\end{proof}
+\subsection{A statistically calibrated exploration gate}
+\label{subsec:stage2-exploration}
+
+Let \(\mathcal F_{\mathrm{freeze}}\) contain the target-validity, pilot, mode,
+estimand, candidate-library, and initialization information.  Conditional on
+\(\mathcal F_{\mathrm{freeze}}\), all these objects are fixed.  For each
+tested candidate--estimand pair \((a,r)\), define
+\begin{equation}
+ z_{a,r}(n)
+ =
+ \mathbb P_{\nu_a}
+ \{N_{a,r}^{\mathrm{cross}}(n)=0
+   \mid\mathcal F_{\mathrm{freeze}}\}.
+ \label{eq:s2-zero-cross-prob}
+\end{equation}
+The \(L_{\mathrm{adq}}\) adequacy paths for a fixed candidate are independent
+replicates of length \(n\) with initialization \(\nu_a\).  Dependence between
+different candidate--estimand pairs is allowed.
+
+For \(0\leq k\leq L\) and \(\eta\in(0,1)\), define the one-sided
+Clopper--Pearson upper bound
+\begin{equation}
+ U_{\mathrm{CP}}(k,L;\eta)
+ =
+ \begin{cases}
+  1, & k=L,\\[2mm]
+  F_{\mathrm{Beta}(k+1,L-k)}^{-1}(1-\eta), & 0\leq k<L.
+ \end{cases}
+ \label{eq:s2-cp}
+\end{equation}
+Equivalently, for \(k<L\), \(U_{\mathrm{CP}}\) is the unique \(u\in(0,1)\)
+satisfying
+\[
+ \sum_{j=0}^{k}\binom{L}{j}u^j(1-u)^{L-j}=\eta.
+\]
+
+\begin{theorem}[Simultaneous Gate-2 calibration]
+\label{thm:s2-gate2}
+Let \(\mathcal I_{\mathrm{adq}}\) be the set of tested
+candidate--mandatory-nonsmooth-estimand pairs and put
+\(M_{\mathrm{adq}}=|\mathcal I_{\mathrm{adq}}|\).  Allocate numbers
+\(\eta_{a,r}>0\) satisfying
+\[
+ \sum_{(a,r)\in\mathcal I_{\mathrm{adq}}}\eta_{a,r}
+ \leq\delta_{\mathrm{adq}}.
+\]
+If \(K_{a,r}\) of the \(L_{\mathrm{adq}}\) paths have zero crossings, then,
+conditionally on \(\mathcal F_{\mathrm{freeze}}\),
+\[
+ K_{a,r}\sim
+ \operatorname{Binomial}(L_{\mathrm{adq}},z_{a,r}(n)).
+\]
+Moreover,
+\begin{equation}
+ \mathbb P\left\{
+  z_{a,r}(n)
+  \leq
+  U_{a,r}:=
+  U_{\mathrm{CP}}(K_{a,r},L_{\mathrm{adq}};\eta_{a,r})
+  \ \text{for all }(a,r)\in\mathcal I_{\mathrm{adq}}
+  \,\middle|\,\mathcal F_{\mathrm{freeze}}
+ \right\}
+ \geq1-\delta_{\mathrm{adq}}.
+ \label{eq:s2-cp-simultaneous}
+\end{equation}
+Consequently, a candidate declared eligible only when
+\begin{equation}
+ U_{a,r}\leq z_r^{\max}
+ \quad
+ \text{for every mandatory nonsmooth \(r\)}
+ \label{eq:s2-gate2-pass}
+\end{equation}
+satisfies \(z_{a,r}(n)\leq z_r^{\max}\) for all of those estimands on the
+simultaneous event \eqref{eq:s2-cp-simultaneous}.
+\end{theorem}
+
+\begin{proof}
+For a fixed pair, the zero-crossing indicators are conditionally independent
+Bernoulli variables with success probability \(z_{a,r}(n)\), proving the
+binomial statement.  The defining inversion of the exact binomial test gives
+\[
+ \mathbb P\{z_{a,r}(n)>U_{a,r}
+ \mid\mathcal F_{\mathrm{freeze}}\}
+ \leq\eta_{a,r}.
+\]
+The union bound over \(\mathcal I_{\mathrm{adq}}\) proves
+\eqref{eq:s2-cp-simultaneous}.  On that event,
+\eqref{eq:s2-gate2-pass} implies
+\(z_{a,r}(n)\leq U_{a,r}\leq z_r^{\max}\).
+\end{proof}
+
+\begin{corollary}[Zero observed failures and required replicate count]
+\label{cor:s2-gate2-count}
+If \(K_{a,r}=0\), then
+\begin{equation}
+ U_{\mathrm{CP}}(0,L;\eta)
+ =
+ 1-\eta^{1/L}.
+ \label{eq:s2-cp-zero}
+\end{equation}
+Thus zero observed zero-crossing paths can establish
+\(z_{a,r}(n)\leq z^{\max}\) only if
+\begin{equation}
+ L
+ \geq
+ \left\lceil
+  \frac{\log\eta}{\log(1-z^{\max})}
+ \right\rceil.
+ \label{eq:s2-required-adq}
+\end{equation}
+In particular, with \(L=12\) and unadjusted one-sided confidence \(0.95\),
+\[
+ U_{\mathrm{CP}}(0,12;0.05)
+ =
+ 1-0.05^{1/12}
+ =
+ 0.220922\ldots.
+\]
+Hence \(0/12\) does not establish \(z\leq0.10\).
+\end{corollary}
+
+\begin{proof}
+For \(k=0\), the binomial lower tail is \((1-u)^L\).  Setting it equal to
+\(\eta\) gives \eqref{eq:s2-cp-zero}.  Solving
+\(1-\eta^{1/L}\leq z^{\max}\) for \(L\) gives
+\eqref{eq:s2-required-adq}; both logarithms are negative.
+\end{proof}
+
+\begin{remark}[Entry and exit counts are severity measures]
+\label{rem:s2-entry-exit}
+The eligibility rule \eqref{eq:s2-gate2-pass} uses only the simultaneous
+zero-crossing-probability bounds.  Mean entry and exit totals are reported as
+secondary severity measures and are not compared with a point threshold of
+five.  If a later protocol makes a replicate-level count \(N\) an eligibility
+condition, it must use a simultaneous lower confidence bound.  For example,
+if \(0\leq N\leq c_n\) almost surely over independent paths, Hoeffding's
+inequality gives, simultaneously over \(M\) declared count summaries,
+\[
+ \mathbb E N
+ \geq
+ \overline N
+ -
+ c_n\sqrt{\frac{\log(M/\delta)}{2L}}
+\]
+with probability at least \(1-\delta\).  This conservative bound is displayed
+before any count threshold is adopted.
+\end{remark}
+
+\subsection{Horizon adequacy and qualification of LRV language}
+\label{subsec:stage2-horizon}
+
+For a stationary chain and a centred square-integrable \(f\), write
+\(\gamma_k(f)=\operatorname{Cov}_{\pi_h}\{f(X_0),f(X_k)\}\).  Define
+\[
+ D(n)
+ =
+ n\,\operatorname{Var}_{\pi_h}
+ \left(\frac1n\sum_{j=0}^{n-1}f(X_j)\right).
+\]
+
+\begin{theorem}[A quantitative stationary plateau envelope]
+\label{thm:s2-lrv-envelope}
+Assume that the chain is stationary and
+\begin{equation}
+ |\gamma_k(f)|\leq C\rho^k,
+ \qquad k\geq1,
+ \qquad C<\infty,\quad0<\rho<1.
+ \label{eq:s2-cov-envelope}
+\end{equation}
+Then the stationary long-run variance
+\[
+ \sigma_P^2(f)
+ =
+ \gamma_0(f)+2\sum_{k=1}^{\infty}\gamma_k(f)
+\]
+exists absolutely, and
+\begin{equation}
+ |D(n)-\sigma_P^2(f)|
+ \leq
+ 2C
+ \left[
+  \frac{\rho}{n(1-\rho)^2}
+  +
+  \frac{\rho^n}{1-\rho}
+ \right].
+ \label{eq:s2-lrv-bound}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Stationarity gives the exact finite-\(n\) identity
+\[
+ D(n)
+ =
+ \gamma_0(f)
+ +
+ 2\sum_{k=1}^{n-1}
+ \left(1-\frac{k}{n}\right)\gamma_k(f).
+\]
+Absolute summability follows from \eqref{eq:s2-cov-envelope}.  Subtracting the
+infinite covariance series yields
+\[
+ D(n)-\sigma_P^2(f)
+ =
+ -\frac2n\sum_{k=1}^{n-1}k\gamma_k(f)
+ -
+ 2\sum_{k=n}^{\infty}\gamma_k(f).
+\]
+Therefore
+\[
+ |D(n)-\sigma_P^2(f)|
+ \leq
+ \frac{2C}{n}\sum_{k=1}^{n-1}k\rho^k
+ +
+ 2C\sum_{k=n}^{\infty}\rho^k.
+\]
+Using
+\(\sum_{k\geq1}k\rho^k=\rho/(1-\rho)^2\) and
+\(\sum_{k\geq n}\rho^k=\rho^n/(1-\rho)\) proves
+\eqref{eq:s2-lrv-bound}.
+\end{proof}
+
+\begin{remark}[Nonstationary paths]
+\label{rem:s2-nonstationary-horizon}
+Theorem~\ref{thm:s2-lrv-envelope} is deliberately restricted to
+stationarity.  For \(X_0\sim\nu_a\neq\pi_h\), the finite-horizon objects are
+\(D_{a,r}(n)\), \(R_{a,r}(n)\), and \(B_{a,r}(n)\) from
+\eqref{eq:s2-dispersion}--\eqref{eq:s2-bias}.  A visually flat dispersion
+curve does not remove the initialization term \(nB_{a,r}(n)^2\), and it does
+not verify \eqref{eq:s2-cov-envelope}.  Unless usable, independently justified
+constants \(C,\rho\) and a stationary initialization are available, Gate 3 is
+a falsification screen only.  The decision target must then remain a declared
+finite-horizon dispersion, finite-horizon MSE, or bounded finite-horizon loss.
+\end{remark}
+
+\subsection{Exact bounded finite-horizon risk replicates}
+\label{subsec:stage2-risk-replicates}
+
+We first give exact bounded component-risk replicates.  They do not require
+stationarity.
+
+\begin{proposition}[Exact paired finite-horizon dispersion replicate]
+\label{prop:s2-paired-dispersion}
+Suppose \(m_r\leq f_r\leq M_r\) and
+\(\Delta_r=M_r-m_r>0\).  Generate two independent length-\(n\) paths from the
+same candidate \(P_a\) and the same initialization law \(\nu_a\), and let
+\(\widehat\mu^{(1)}_{a,r,n}\) and
+\(\widehat\mu^{(2)}_{a,r,n}\) be their averages.  Then
+\begin{equation}
+ Z_{a,r}
+ =
+ \frac n2
+ \left(
+  \widehat\mu^{(1)}_{a,r,n}
+  -
+  \widehat\mu^{(2)}_{a,r,n}
+ \right)^2
+ \label{eq:s2-paired-z}
+\end{equation}
+satisfies
+\begin{equation}
+ \mathbb E_{\nu_a}Z_{a,r}=D_{a,r}(n),
+ \qquad
+ 0\leq Z_{a,r}\leq\frac{n\Delta_r^2}{2}.
+ \label{eq:s2-paired-range}
+\end{equation}
+Thus
+\[
+ Y_{a,r}
+ =
+ \frac{2Z_{a,r}}{n\Delta_r^2}
+ \in[0,1],
+ \qquad
+ \mathcal J_r(a):=\mathbb EY_{a,r}
+ =
+ \frac{2D_{a,r}(n)}{n\Delta_r^2}.
+\]
+\end{proposition}
+
+\begin{proof}
+If \(U,V\) are independent and identically distributed, then
+\(\mathbb E(U-V)^2=2\operatorname{Var}(U)\).  Apply this with the two path
+averages and multiply by \(n/2\).  Each average lies in \([m_r,M_r]\), so its
+difference from the other average has magnitude at most \(\Delta_r\), proving
+the range.
+\end{proof}
+
+\begin{proposition}[Bounded MSE and capped-loss replicates]
+\label{prop:s2-bounded-loss}
+If \(m_r\leq f_r\leq M_r\) and \(\mu_r\) is known, then
+\[
+ Y_{a,r}^{\mathrm{MSE}}
+ =
+ \frac{(\widehat\mu_{a,r,n}-\mu_r)^2}{\Delta_r^2}
+ \in[0,1],
+ \qquad
+ \mathbb E Y_{a,r}^{\mathrm{MSE}}
+ =
+ \frac{R_{a,r}(n)}{n\Delta_r^2}.
+\]
+For an unbounded estimand, fix a scientifically declared tolerance
+\(\tau_r>0\) before candidate evaluation and define
+\[
+ \ell_{\tau_r}(e)
+ =
+ \min\left\{\frac{e^2}{\tau_r^2},1\right\},
+ \qquad
+ Y_{a,r}^{\mathrm{cap}}
+ =
+ \ell_{\tau_r}(\widehat\mu_{a,r,n}-\mu_r).
+\]
+Then \(Y_{a,r}^{\mathrm{cap}}\in[0,1]\) and its expectation is a bounded
+finite-horizon, estimand-specific decision loss.  It is not the raw MSE
+\(R_{a,r}(n)\).  If a certified reference \(\widetilde\mu_r\) obeys
+\(|\widetilde\mu_r-\mu_r|\leq b_r\), then
+\begin{equation}
+ \left|
+  \mathbb E\ell_{\tau_r}
+    (\widehat\mu_{a,r,n}-\widetilde\mu_r)
+  -
+  \mathbb E\ell_{\tau_r}
+    (\widehat\mu_{a,r,n}-\mu_r)
+ \right|
+ \leq
+ \frac{2b_r}{\tau_r}.
+ \label{eq:s2-reference-loss}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The bounded-MSE statement follows because both the path average and its target
+mean lie in \([m_r,M_r]\).  The capped loss is bounded by construction.  The
+map \(e\mapsto\ell_{\tau_r}(e)\) is globally \(2/\tau_r\)-Lipschitz: on
+\(|e|<\tau_r\) its derivative has magnitude at most \(2/\tau_r\), and outside
+that interval it is constant.  Equation \eqref{eq:s2-reference-loss} follows
+from the Lipschitz bound.
+\end{proof}
+
+\subsection{Operational finite-sample selection and certified fallback}
+\label{subsec:stage2-selection}
+Let
+\[
+ \mathcal F_0
+ =
+ \mathcal F_{\mathrm{freeze}}
+ \vee\mathcal F_{\mathrm{adq}}
+ \vee\mathcal F_{\mathrm{hor}}
+\]
+contain all information used before risk tuning.  The eligible library
+\(\mathcal A_{\mathrm{adq}}\) is \(\mathcal F_0\)-measurable.  Conditional on
+\(\mathcal F_0\), suppose the tuning replicates
+\(\{Y_{a,r,\ell}:1\leq\ell\leq m_{\mathrm{tun}}\}\) are independent over
+\(\ell\), lie in \([0,1]\), and have conditional mean
+\(\mathcal J_r(a)\).  Dependence across candidates or components at a fixed
+replicate index is allowed.
+
+\begin{theorem}[Operational finite-library selection]
+\label{thm:s2-operational-selection}
+Let \(K=|\mathcal A|\), let \(R\) be the number of mandatory component risks,
+and let \(\delta_{\mathrm{tun}}\in(0,1)\).  For
+\[
+ \widehat{\mathcal J}_r(a)
+ =
+ \frac1{m_{\mathrm{tun}}}
+ \sum_{\ell=1}^{m_{\mathrm{tun}}}Y_{a,r,\ell},
+\]
+define
+\begin{equation}
+ \varepsilon_{\mathrm{tun}}
+ =
+ \sqrt{
+  \frac{\log(2KR/\delta_{\mathrm{tun}})}
+       {2m_{\mathrm{tun}}}
+ }.
+ \label{eq:s2-tuning-epsilon}
+\end{equation}
+Then, conditionally on \(\mathcal F_0\), with probability at least
+\(1-\delta_{\mathrm{tun}}\),
+\begin{equation}
+ \sup_{a\in\mathcal A_{\mathrm{adq}}}
+ \max_{1\leq r\leq R}
+ \left|
+  \widehat{\mathcal J}_r(a)-\mathcal J_r(a)
+ \right|
+ \leq\varepsilon_{\mathrm{tun}}.
+ \label{eq:s2-uniform-components}
+\end{equation}
+
+Let nonnegative weights satisfy \(\sum_r\omega_r=1\), and define
+\[
+ \mathcal J_{\mathrm w}(a)=\sum_r\omega_r\mathcal J_r(a),
+ \qquad
+ \mathcal J_{\max}(a)=\max_r\mathcal J_r(a),
+\]
+with plug-in versions formed from the component estimates.  For either
+\(\mathcal J\in\{\mathcal J_{\mathrm w},\mathcal J_{\max}\}\), if
+\[
+ \widehat{\mathcal J}(\widehat a)
+ \leq
+ \min_{a\in\mathcal A_{\mathrm{adq}}}
+ \widehat{\mathcal J}(a)
+ +
+ \eta_{\mathrm{opt}},
+\]
+then on \eqref{eq:s2-uniform-components},
+\begin{equation}
+ \mathcal J(\widehat a)
+ \leq
+ \min_{a\in\mathcal A_{\mathrm{adq}}}\mathcal J(a)
+ +
+ 2\varepsilon_{\mathrm{tun}}
+ +
+ \eta_{\mathrm{opt}}.
+ \label{eq:s2-oracle-regret}
+\end{equation}
+If capped losses use certified references with
+\(\kappa_{\mathrm{ref}}=\max_r2b_r/\tau_r\), replace
+\(\varepsilon_{\mathrm{tun}}\) in
+\eqref{eq:s2-uniform-components}--\eqref{eq:s2-oracle-regret} by
+\(\varepsilon_{\mathrm{tun}}+\kappa_{\mathrm{ref}}\).
+\end{theorem}
+
+\begin{proof}
+For a fixed pair \((a,r)\), Hoeffding's inequality gives
+\[
+ \mathbb P\left(
+  |\widehat{\mathcal J}_r(a)-\mathcal J_r(a)|>t
+  \,\middle|\,\mathcal F_0
+ \right)
+ \leq2e^{-2m_{\mathrm{tun}}t^2}.
+\]
+Take \(t=\varepsilon_{\mathrm{tun}}\) and apply the union bound over the
+at most \(KR\) frozen pairs.  This proves
+\eqref{eq:s2-uniform-components}.  On that event, the weighted objective
+differs from its plug-in version by at most
+\(\sum_r\omega_r\varepsilon_{\mathrm{tun}}
+=\varepsilon_{\mathrm{tun}}\), and the maximum objective differs by at most
+the same amount.  If \(a^\star\) minimizes the true objective over the eligible
+library, then
+\[
+ \mathcal J(\widehat a)
+ \leq
+ \widehat{\mathcal J}(\widehat a)+\varepsilon_{\mathrm{tun}}
+ \leq
+ \widehat{\mathcal J}(a^\star)
+ +\eta_{\mathrm{opt}}+\varepsilon_{\mathrm{tun}}
+ \leq
+ \mathcal J(a^\star)
+ +2\varepsilon_{\mathrm{tun}}+\eta_{\mathrm{opt}}.
+\]
+The reference-error modification follows from
+\eqref{eq:s2-reference-loss} and another triangle inequality.
+\end{proof}
+
+\begin{remark}[Why this theorem is operational]
+\label{rem:s2-operational}
+The range \([0,1]\) is analytic and fixed before tuning, so its envelope has
+failure probability zero.  No tuning-stream standard deviation is inserted
+into the theorem.  The price is conservatism, quantified below.  Raw
+finite-horizon dispersion or MSE for an unbounded estimand is not covered by
+Theorem~\ref{thm:s2-operational-selection}; it requires either a proved
+finite-moment robust construction with an independent scale stream or the
+scientifically frozen capped loss in
+Proposition~\ref{prop:s2-bounded-loss}.  If neither is approved, the full
+portfolio is not operational and the fallback is mandatory.
+\end{remark}
+
+After tuning, let
+\[
+ \mathcal F_{\mathrm{sel}}
+ =
+ \mathcal F_0\vee\mathcal F_{\mathrm{tun}}
+\]
+contain the selected candidate and all abort decisions.  Certification data
+are conditionally independent of \(\mathcal F_{\mathrm{sel}}\).
+
+\begin{theorem}[Independent certification and fallback]
+\label{thm:s2-fallback}
+Let \(a_0\) be the frozen fallback and let \(\widehat a\) be
+\(\mathcal F_{\mathrm{sel}}\)-measurable.
+
+\emph{Weighted objective.}
+For each certification replicate, let
+\[
+ W_\ell
+ =
+ \sum_{r=1}^R
+ \omega_r
+ \{Y_{a_0,r,\ell}-Y_{\widehat a,r,\ell}\}.
+\]
+Assume the replicates are independent over \(\ell\), conditional on
+\(\mathcal F_{\mathrm{sel}}\), with the correct component marginals.  Then
+\(W_\ell\in[-1,1]\) and
+\[
+ \mathbb E(W_\ell\mid\mathcal F_{\mathrm{sel}})
+ =
+ \Delta_{\widehat a}
+ :=
+ \mathcal J_{\mathrm w}(a_0)
+ -
+ \mathcal J_{\mathrm w}(\widehat a).
+\]
+The lower bound
+\begin{equation}
+ L_{\mathrm{cert}}
+ =
+ \overline W
+ -
+ \sqrt{
+  \frac{2\log(1/\delta_{\mathrm{cert}})}
+       {m_{\mathrm{cert}}}
+ }
+ \label{eq:s2-cert-lcb}
+\end{equation}
+satisfies
+\begin{equation}
+ \mathbb P\{
+  L_{\mathrm{cert}}\leq\Delta_{\widehat a}
+  \mid\mathcal F_{\mathrm{sel}}
+ \}
+ \geq1-\delta_{\mathrm{cert}}.
+ \label{eq:s2-cert-coverage}
+\end{equation}
+
+\emph{Maximum objective.}
+For \(1\leq r,s\leq R\), form
+\[
+ W_{r,s,\ell}
+ =
+ Y_{a_0,r,\ell}-Y_{\widehat a,s,\ell}
+ \in[-1,1]
+\]
+and
+\[
+ L_{r,s}
+ =
+ \overline W_{r,s}
+ -
+ \sqrt{
+  \frac{2\log(R^2/\delta_{\mathrm{cert}})}
+       {m_{\mathrm{cert}}}
+ }.
+\]
+Then
+\begin{equation}
+ L_{\max}
+ =
+ \max_r\min_sL_{r,s}
+ \label{eq:s2-max-lcb}
+\end{equation}
+is a simultaneous lower confidence bound for
+\(\mathcal J_{\max}(a_0)-\mathcal J_{\max}(\widehat a)\) with conditional
+coverage at least \(1-\delta_{\mathrm{cert}}\).
+
+Deploy \(\widehat a\) only if no earlier abort occurred and the applicable
+lower bound is strictly positive; otherwise deploy \(a_0\).  Then, for either
+objective,
+\begin{equation}
+ \mathbb P\{
+  \mathcal J(\textnormal{deployed})
+  >
+  \mathcal J(a_0)
+ \mid\mathcal F_{\mathrm{sel}}
+ \}
+ \leq\delta_{\mathrm{cert}}.
+ \label{eq:s2-no-harm}
+\end{equation}
+For capped losses evaluated with an approximate certified reference, subtract
+\(2\kappa_{\mathrm{ref}}\) from the lower bounds.
+\end{theorem}
+
+\begin{proof}
+For the weighted objective, Hoeffding's one-sided inequality for variables in
+an interval of length two gives
+\[
+ \mathbb P\left\{
+  \overline W-\Delta_{\widehat a}\leq-t
+  \,\middle|\,\mathcal F_{\mathrm{sel}}
+ \right\}
+ \leq
+ \exp\left(-\frac{m_{\mathrm{cert}}t^2}{2}\right).
+\]
+Substitution of the radius in \eqref{eq:s2-cert-lcb} proves
+\eqref{eq:s2-cert-coverage}.
+
+For the maximum objective, the same inequality with error allocation
+\(\delta_{\mathrm{cert}}/R^2\) holds simultaneously for all \((r,s)\).
+On that event \(L_{r,s}\leq\mathcal J_r(a_0)-\mathcal J_s(\widehat a)\), and
+\[
+ \mathcal J_{\max}(a_0)-\mathcal J_{\max}(\widehat a)
+ =
+ \max_r\min_s
+ \{\mathcal J_r(a_0)-\mathcal J_s(\widehat a)\}.
+\]
+Taking \(\max_r\min_s\) preserves the lower-bound direction and proves the
+claim for \(L_{\max}\).
+
+On an abort or nonpositive-bound branch the fallback is deployed and cannot
+have risk larger than itself.  On a positive-bound branch, harmful deployment
+requires failure of the relevant lower-confidence event.  This proves
+\eqref{eq:s2-no-harm}.  Under an approximate reference, each candidate's
+component risk can move by at most \(\kappa_{\mathrm{ref}}\), so a baseline
+minus candidate difference can move by at most
+\(2\kappa_{\mathrm{ref}}\).
+\end{proof}
+
+\begin{proposition}[Certification power calculation]
+\label{prop:s2-cert-power}
+For the weighted construction, suppose the true normalized improvement is
+\(\Delta_{\widehat a}\geq d>0\).  To make
+\(\mathbb P(L_{\mathrm{cert}}>0\mid\mathcal F_{\mathrm{sel}})
+\geq1-\beta\), it is sufficient that
+\begin{equation}
+ m_{\mathrm{cert}}
+ \geq
+ \frac{2}{d^2}
+ \left\{
+  \sqrt{\log(1/\delta_{\mathrm{cert}})}
+  +
+  \sqrt{\log(1/\beta)}
+ \right\}^2.
+ \label{eq:s2-cert-power-count}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+With conditional probability at least \(1-\beta\),
+\[
+ \overline W
+ \geq
+ \Delta_{\widehat a}
+ -
+ \sqrt{\frac{2\log(1/\beta)}{m_{\mathrm{cert}}}}.
+\]
+Combining this inequality with \eqref{eq:s2-cert-lcb}, the lower bound is
+positive whenever the two radii sum to less than \(d\).
+Solving for \(m_{\mathrm{cert}}\) gives
+\eqref{eq:s2-cert-power-count}.
+\end{proof}
+
+\subsection{Error budget and executable Tier-A constants}
+\label{subsec:stage2-budget}
+
+\begin{proposition}[Complete workflow error allocation]
+\label{prop:s2-error-budget}
+Let \(\mathcal E_{\mathrm{tar}}\), \(\mathcal E_{\mathrm{adq}}\),
+\(\mathcal E_{\mathrm{tun}}\), \(\mathcal E_{\mathrm{env}}\),
+\(\mathcal E_{\mathrm{cert}}\), and \(\mathcal E_{\mathrm{rep}}\) be,
+respectively, the target/reference-validity, simultaneous Gate-2, uniform
+tuning, risk-envelope, independent certification, and held-out-reporting
+events.  Suppose their conditional constructions are valid at
+failure levels
+\[
+ \delta_{\mathrm{tar}},\quad
+ \delta_{\mathrm{adq}},\quad
+ \delta_{\mathrm{tun}},\quad
+ \delta_{\mathrm{env}},\quad
+ \delta_{\mathrm{cert}},\quad
+ \delta_{\mathrm{rep}}.
+\]
+Sample splitting is used so that each conditional statement is made after all
+objects it conditions on have been frozen.  Then
+\begin{equation}
+ \mathbb P\left(
+  \bigcap_{\star\in\{\mathrm{tar,adq,tun,env,cert,rep}\}}
+  \mathcal E_\star
+ \right)
+ \geq
+ 1-
+ \sum_\star\delta_\star.
+ \label{eq:s2-total-budget}
+\end{equation}
+On this intersection, every eligible candidate satisfies the Gate-2
+requirement, the selected candidate satisfies
+\eqref{eq:s2-oracle-regret}, and a deployed nonfallback candidate improves on
+the fallback.  Independence among the five events is not required for
+\eqref{eq:s2-total-budget}; the separate streams are required to make the
+conditional confidence statements valid.
+\end{proposition}
+
+\begin{proof}
+Each construction controls its failure probability conditionally on the
+sigma-field generated by earlier stages.  Iterated expectation gives the same
+unconditional bound.  A union bound proves \eqref{eq:s2-total-budget}.  The
+three substantive conclusions are exactly those of
+Theorems~\ref{thm:s2-gate2}, \ref{thm:s2-operational-selection}, and
+\ref{thm:s2-fallback} on their respective events.
+\end{proof}
+
+For the next experiment, freeze the familywise budget
+\begin{equation}
+\begin{array}{c|cccccc}
+\text{stage}
+&\text{target}
+&\text{adequacy}
+&\text{tuning}
+&\text{envelope}
+&\text{certification}
+&\text{held-out report}\\ \hline
+\delta
+&0.005&0.010&0.010&0&0.015&0.010 .
+\end{array}
+\label{eq:s2-numeric-budget}
+\end{equation}
+The envelope allocation is zero because the operational construction uses
+analytic \([0,1]\) ranges.  The allocations sum to \(0.05\).
+
+\begin{proposition}[Tier-A numerical instantiation]
+\label{prop:s2-tier-a}
+Use the three-candidate family \(K=3\).  In the Tier-A mode-discovery rule,
+every retained mode has reference mass at least \(0.015\), so disjointness
+implies at most
+\[
+ M_{\mathrm{mode}}
+ \leq\left\lfloor\frac1{0.015}\right\rfloor=66
+\]
+retained modes.  With the five non-mode estimands, \(R\leq71\); with two
+non-mode nonsmooth events, the number of mandatory nonsmooth estimands is at
+most \(68\), and hence
+\[
+ M_{\mathrm{adq}}\leq3\times68=204.
+\]
+Under equal Bonferroni allocation, \(z^{\max}=0.10\), and
+\(\delta_{\mathrm{adq}}=0.010\), zero observed zero-crossing paths require
+\begin{equation}
+ L_{\mathrm{adq}}
+ \geq
+ \left\lceil
+ \frac{\log(0.010/204)}{\log(0.9)}
+ \right\rceil
+ =
+ 95.
+ \label{eq:s2-tier-a-adq}
+\end{equation}
+For the fixed seven-estimand Tier-B portfolio with four nonsmooth components,
+the corresponding count is
+\[
+ \left\lceil
+ \frac{\log(0.010/12)}{\log(0.9)}
+ \right\rceil
+ =
+ 68.
+\]
+
+For \(K=3\), \(R=71\), and \(\delta_{\mathrm{tun}}=0.010\), requiring
+\(\varepsilon_{\mathrm{tun}}\leq0.10\) in
+\eqref{eq:s2-tuning-epsilon} requires
+\begin{equation}
+ m_{\mathrm{tun}}
+ \geq
+ \left\lceil
+  \frac{\log(2\cdot3\cdot71/0.010)}
+       {2(0.10)^2}
+ \right\rceil
+ =
+ 533
+ \quad\text{replicates per candidate}.
+ \label{eq:s2-tier-a-tuning}
+\end{equation}
+For the fixed seven-component portfolio the corresponding count is \(418\).
+The legacy value \(m_{\mathrm{tun}}=2\) gives
+\(\varepsilon_{\mathrm{tun}}=1.63245\ldots\) in the worst-case Tier-A
+portfolio and is vacuous.
+
+Finally, with \(\delta_{\mathrm{cert}}=0.015\), desired power \(0.80\), and a
+scientifically material normalized improvement \(d=0.20\),
+\eqref{eq:s2-cert-power-count} gives
+\begin{equation}
+ m_{\mathrm{cert}}\geq551
+ \label{eq:s2-tier-a-cert}
+\end{equation}
+paired certification replicates for the weighted objective.  These values are
+finite and executable, but intentionally expose the cost of an assumption-free
+bounded-range guarantee.
+\end{proposition}
+
+\begin{proof}
+The mode-count bound follows because \(m\) disjoint sets of probability at
+least \(0.015\) have total probability at least \(0.015m\leq1\).  The remaining
+values follow by direct substitution into
+\eqref{eq:s2-required-adq}, \eqref{eq:s2-tuning-epsilon}, and
+\eqref{eq:s2-cert-power-count}; the accompanying verification script performs
+the calculations without rounding intermediate values.
+\end{proof}
+
+\begin{remark}[Remaining Tier-A target-validity hold]
+\label{rem:s2-tier-a-hold}
+The numerical counts in Proposition~\ref{prop:s2-tier-a} instantiate the
+selection theorem's library size, multiplicity, concentration radii, and power.
+They do not fabricate missing componentwise quadrature errors.  Before a
+Tier-A capped-loss experiment is run, the tolerance vector \(\tau_r\) and the
+reference radii \(b_r\) must be frozen and must satisfy the target budget
+\(\delta_{\mathrm{tar}}=0.005\).  The natural provisional scales are
+\(\tau_\alpha=0.5\), the prior standard deviation of log-intensity, and
+\(\tau_{p_\star}=0.195\), the frozen regulatory concentration threshold.
+These become operational only after PI approval and an independent
+componentwise reference-convergence table.  Until then, the full-portfolio
+selection procedure remains stopped.
+\end{remark}

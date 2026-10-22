@@ -1,0 +1,23 @@
+{
+  "experiment": "C_exact_certification",
+  "seed": 330000001,
+  "p": 0.5,
+  "horizon": 20,
+  "certification_units": 551,
+  "delta": 0.015,
+  "hoeffding_radius": 0.1234663459275306,
+  "meta_repetitions_per_setting": 2000,
+  "primary_epsilon": 0.001,
+  "primary_power": 1.0,
+  "primary_power_ci95": [
+    0.998157260206594,
+    1
+  ],
+  "null_false_certifications": 0,
+  "null_false_certification_rate": 0.0,
+  "null_ci95": [
+    0,
+    0.0018427397934059364
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,15 @@
+stage2_outputs/two_state_verification.json
+stage2_outputs/proxy_lrv_verification.json
+stage5_outputs/experiment_A/two_state_results.csv
+stage5_outputs/experiment_A/summary.json
+stage5_outputs/experiment_B/oracle_risk.csv
+stage5_outputs/experiment_B/oracle_resolution.csv
+stage5_outputs/experiment_B/selection_repetitions.csv
+stage5_outputs/experiment_B/gate2_tests.csv
+stage5_outputs/experiment_B/certification.csv
+stage5_outputs/experiment_B/estimand_metrics.csv
+stage5_outputs/experiment_B/stream_manifest.csv
+stage5_outputs/experiment_B/summary.json
+stage7_outputs/certification/certification_power.csv
+stage7_outputs/certification/summary.json
+stage8_outputs/theory_landscapes.json

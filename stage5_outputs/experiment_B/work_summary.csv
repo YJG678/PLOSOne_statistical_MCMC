@@ -1,0 +1,4 @@
+algorithm,sweeps_per_path,target_evaluations_per_sweep,target_evaluations_per_path,offline_training_target_evaluations,recorded_blocks,total_recorded_target_evaluations,total_elapsed_seconds,seconds_per_million_target_evaluations
+local_RWM,3000,1,3000,0,12,385659000,76.49092756600294,0.19833824068932124
+transport_independence,3000,1,3000,0,12,385659000,138.63341681499696,0.3594714937678025
+parallel_tempering,600,5,3000,0,12,385659000,86.12917603999995,0.2233298744227412

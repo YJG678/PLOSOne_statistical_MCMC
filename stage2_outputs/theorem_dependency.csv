@@ -1,0 +1,13 @@
+result_id,result,required_assumptions,stationarity_required,initialization_explicit,empirical_input,downstream_use,status
+S2-01,Finite-horizon bias-variance identity,"Square-integrable finite path; declared nu_a and pi_h",no,yes,none,Defines D and R,proved
+S2-02,Two-estimator disagreement,"Two L2 estimators of same scalar target",no,yes when applied to MCMC,Independent replicate confidence interval if empirical,Reference-free falsification only,proved
+S2-03,Exact false precision,"Two-state P_p_epsilon; L independent paths; X0=0",no,yes,none,Load-bearing motivating theorem,proved and exactly verified
+S2-04,Finite-path indistinguishability,"Two-state pair; same epsilon; finite L and n",no,yes,none,Le Cam impossibility and diagnostic abstention,proved and exactly verified
+S2-05,Rare-mode proxy formulas,"Disjoint two-mode mixture; 0<w<p<1; stationary independence MH",yes,yes,none,Shows proxy values do not certify rare-event efficiency,proved and exactly verified
+S2-06,Simultaneous CP Gate 2,"Frozen tested pairs; independent adequacy replicates; explicit nu_a",no,yes,Zero-crossing indicators,Eligibility control,proved and calibration verified
+S2-07,Stationary LRV envelope,"Stationarity; absolute covariance envelope C rho^k",yes,stationary pi_h,None or independently justified C and rho,LRV qualification,proved and exactly verified
+S2-08,Paired dispersion replicate,"Two independent paths from same nu_a; bounded f_r",no,yes,Paired path averages,Creates exact bounded risk replicate,proved
+S2-09,Bounded or capped-loss replicate,"Bounded f or frozen tolerance; certified target reference when used",no,yes,Path average and optional reference,Operational component risk,proved
+S2-10,Uniform selection and oracle regret,"Finite eligible library; conditional iid bounded risk replicates; sample split",no,yes,Tuning risk replicates,Selects relative to eligible library,proved
+S2-11,Certified fallback,"Selected candidate fixed before independent bounded certification pairs",no,yes,Independent certification pairs,No-harm deployment bound,proved
+S2-12,Workflow error allocation,"Valid conditional stage events and frozen error allocations",depends on component,no,All declared stage streams,Familywise guarantee,proved

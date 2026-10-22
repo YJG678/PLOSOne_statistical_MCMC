@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "row_sums": [
+    1.0,
+    1.0
+  ],
+  "detailed_balance_residual": 0.0,
+  "no_visit_enumerated": 0.8443509168379213,
+  "no_visit_formula": 0.8443509168379216,
+  "false_precision_alpha": 0.05,
+  "false_precision_epsilon": 0.021326593887803225,
+  "false_precision_probability": 0.9500000000000003,
+  "indistinguishability": {
+    "p0": 0.25,
+    "p1": 0.75,
+    "fixed_target_gap": 0.5,
+    "epsilon": 0.017777777777777778,
+    "exact_total_variation": 0.05101840573920564,
+    "common_atom_upper_bound": 0.07738026918944296,
+    "Ln_epsilon_p1_bound": 0.07999999999999999,
+    "Le_Cam_max_error_lower_bound": 0.47449079713039716
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "checks": {
+    "page_count": true,
+    "bibliography_entries": true,
+    "no_unescaped_tex_tokens": true,
+    "no_visible_transcription_tokens": true,
+    "no_undefined_references": true,
+    "no_undefined_citations": true,
+    "no_overfull_boxes": true,
+    "stage5_validation": true,
+    "stage7_validation": true
+  },
+  "observed": {
+    "pages": 24,
+    "bibliography_entries": 46,
+    "unescaped_tokens": [],
+    "pdf_bytes": 499435
+  }
+}

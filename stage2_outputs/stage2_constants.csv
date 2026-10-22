@@ -1,0 +1,23 @@
+freeze_id,block,constant,value,derivation,status,consequence
+STAGE2-2026-08-10-v1,error_budget,delta_total,0.05,Familywise workflow budget,FROZEN,Sum of all stage allocations
+STAGE2-2026-08-10-v1,error_budget,delta_target,0.005,Target and reference validity allocation,FROZEN,Requires componentwise reference certificate
+STAGE2-2026-08-10-v1,error_budget,delta_adequacy,0.010,Gate-2 simultaneous allocation,FROZEN,Distributed over all tested candidate-estimand pairs
+STAGE2-2026-08-10-v1,error_budget,delta_tuning,0.010,Uniform componentwise tuning allocation,FROZEN,Used in Hoeffding radius
+STAGE2-2026-08-10-v1,error_budget,delta_envelope,0,Analytic normalized range [0;1],FROZEN,No plug-in scale estimate
+STAGE2-2026-08-10-v1,error_budget,delta_certification,0.015,Independent deployment certificate,FROZEN,Conditional one-sided Hoeffding lower bound
+STAGE2-2026-08-10-v1,error_budget,delta_reporting,0.010,Held-out simultaneous report allocation,FROZEN,Not reusable for tuning
+STAGE2-2026-08-10-v1,gate2,z_max,0.10,Maximum admissible zero-crossing probability,PENDING PI SIGN-OFF,Eligibility uses CP upper bound not point fraction
+STAGE2-2026-08-10-v1,gate2,L_current,12,Legacy adequacy replicate count,REJECTED,Unadjusted 95 percent upper bound is 0.220922
+STAGE2-2026-08-10-v1,gate2,L_required_primary,68,"K=3; four nonsmooth estimands; delta=0.010; equal allocation",FROZEN MINIMUM,Required when K_zero=0
+STAGE2-2026-08-10-v1,gate2,L_required_tierA_worst_case,95,"K=3; at most 68 nonsmooth estimands; delta=0.010; equal allocation",FROZEN MINIMUM,Required when K_zero=0
+STAGE2-2026-08-10-v1,tierA,K_candidates,3,Stage-1 candidate family,FROZEN,Controls excluded from selectable family
+STAGE2-2026-08-10-v1,tierA,minimum_retained_mode_mass,0.015,Declared Tier-A mode rule,FROZEN,Implies at most 66 retained modes
+STAGE2-2026-08-10-v1,tierA,R_max,71,Five non-mode estimands plus at most 66 modes,FROZEN,Worst-case multiplicity bound
+STAGE2-2026-08-10-v1,tuning,epsilon_target,0.10,Desired uniform normalized component error,PENDING PI SIGN-OFF,Produces conservative sample-size requirement
+STAGE2-2026-08-10-v1,tuning,m_required_primary,418,"K=3; R=7; delta=0.010; epsilon=0.10",FROZEN MINIMUM,Replicates per candidate
+STAGE2-2026-08-10-v1,tuning,m_required_tierA_worst_case,533,"K=3; R=71; delta=0.010; epsilon=0.10",FROZEN MINIMUM,Replicates per candidate
+STAGE2-2026-08-10-v1,certification,material_gap,0.20,Normalized weighted-risk improvement,PENDING PI SIGN-OFF,Power calculation only
+STAGE2-2026-08-10-v1,certification,power,0.80,Desired deployment power at material gap,PENDING PI SIGN-OFF,Corresponds to beta=0.20
+STAGE2-2026-08-10-v1,certification,m_required_weighted,551,"delta=0.015; beta=0.20; gap=0.20",FROZEN MINIMUM IF GAP APPROVED,Paired certification replicates
+STAGE2-2026-08-10-v1,unbounded_loss,tau_alpha,0.5,Prior standard deviation of log intensity,PROVISIONAL,Defines capped finite-horizon loss not raw MSE
+STAGE2-2026-08-10-v1,unbounded_loss,tau_predictive,0.195,Frozen predictive regulatory threshold,PROVISIONAL,Defines capped finite-horizon loss not raw MSE

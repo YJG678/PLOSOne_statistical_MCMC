@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "generated_for": "Measurement Before Selection reproducibility archive",
+  "operating_system": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "architecture": "x86_64"
+  },
+  "python": {
+    "version": "3.12.14",
+    "requirements_file": "reproducibility/requirements-lock.txt"
+  },
+  "executables": {
+    "latexmk": "4.83",
+    "pdftex": "1.40.25",
+    "bibtex": "0.99d",
+    "pdftoppm": "26.05.0",
+    "zip": "3.0"
+  },
+  "deterministic_environment": {
+    "PYTHONHASHSEED": "0",
+    "SOURCE_DATE_EPOCH": "1786320000",
+    "TZ": "UTC",
+    "LC_ALL": "C.UTF-8"
+  },
+  "expected_artifacts": {
+    "manuscript_pages": 26,
+    "bibliography_entries": 40,
+    "stage5_status": "PASS",
+    "stage7_status": "PASS",
+    "stage8_status": "PASS"
+  },
+  "notes": [
+    "Target-evaluation work is matched at 3000 evaluations per path.",
+    "Wall-time fields are intentionally excluded from bitwise scientific-output comparison.",
+    "The lock records the successful reference environment; environment_check.py enforces it."
+  ]
+}

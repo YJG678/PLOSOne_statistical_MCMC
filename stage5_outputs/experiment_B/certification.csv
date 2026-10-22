@@ -1,0 +1,4 @@
+setting,challenger,reference,replicates,mean_improvement,hoeffding_radius,lower_bound,certified
+B1,transport_independence,local_RWM,551,0.0013743999510443625,0.1234663459275306,-0.12209194597648623,False
+B2,transport_independence,local_RWM,551,0.0017025662877238356,0.1234663459275306,-0.12176377963980677,False
+B3,transport_independence,local_RWM,551,0.0009577437418185142,0.1234663459275306,-0.12250860218571208,False

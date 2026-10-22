@@ -1,0 +1,8 @@
+quantity,value
+unadjusted_CP_upper_K0_L12_95pct,0.2209221919455559
+primary_gate2_required_L,68
+tierA_worst_case_gate2_required_L,95
+primary_tuning_required_per_candidate,418
+tierA_tuning_required_per_candidate,533
+legacy_tierA_m2_uniform_radius,1.6324528731526573
+weighted_certification_required_pairs,551

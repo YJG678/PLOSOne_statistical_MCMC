@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "unadjusted_CP_upper_K0_L12_95pct": 0.2209221919455559,
+  "gate2": {
+    "delta": 0.01,
+    "z_max": 0.1,
+    "primary_tested_pairs": 12,
+    "primary_required_replicates_if_K0": 68,
+    "tierA_worst_case_tested_pairs": 204,
+    "tierA_required_replicates_if_K0": 95
+  },
+  "tuning": {
+    "delta": 0.01,
+    "uniform_error_target": 0.1,
+    "primary_K3_R7_required_per_candidate": 418,
+    "tierA_K3_R71_required_per_candidate": 533,
+    "legacy_tierA_m2_radius": 1.6324528731526573
+  },
+  "certification": {
+    "delta": 0.015,
+    "power": 0.8,
+    "normalized_gap": 0.2,
+    "required_paired_replicates": 551
+  }
+}

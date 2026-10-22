@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "completed_at_utc": "2026-08-10T22:48:01Z",
+  "environment_status": "PASS",
+  "stage5_status": "PASS",
+  "stage7_status": "PASS",
+  "artifact_status": "PASS",
+  "pages": 24,
+  "bibliography_entries": 46,
+  "matched_target_evaluations_per_path": 3000
+}

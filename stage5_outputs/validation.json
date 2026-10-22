@@ -1,0 +1,108 @@
+{
+  "status": "PASS",
+  "checks": {
+    "A_rows_117": true,
+    "A_exact_mc_within_5se": true,
+    "A_prevents_false_selection": true,
+    "B_decisions_300": true,
+    "B_oracle_stream_disjoint": true,
+    "B_oracles_resolved_twice": true,
+    "B_summary_independent_oracle": true,
+    "B_matched_target_work": true,
+    "B_frozen_gate2_allocation": true,
+    "B_gate2_decisions_reconstruct": true,
+    "B_matched_work_result_retained": true
+  },
+  "files": [
+    {
+      "path": "stage5_outputs/experiment_A/summary.json",
+      "sha256": "8b452168cfa053052cb08f47678d71e3f5ea0ae577719d71c2362085a193acc4",
+      "bytes": 257
+    },
+    {
+      "path": "stage5_outputs/experiment_A/two_state_mechanism.pdf",
+      "sha256": "4b69d767d9ee43453ad95918028e1c2e49444303a470454db521aca634e4c893",
+      "bytes": 28588
+    },
+    {
+      "path": "stage5_outputs/experiment_A/two_state_mechanism.png",
+      "sha256": "f4caee731c5fe5390d9ff050c80b3af8cec96eccb6ab05f258eef272a5847e09",
+      "bytes": 278886
+    },
+    {
+      "path": "stage5_outputs/experiment_A/two_state_results.csv",
+      "sha256": "90d7b18ffa92ed9dcecaea2f860cd648ac3e529584a15c884c2a2b1c43d49e38",
+      "bytes": 25581
+    },
+    {
+      "path": "stage5_outputs/experiment_B/certification.csv",
+      "sha256": "b4f281b6455c763b36d9bba48f17473cbb0edac939d32b72cd7464b9eee11566",
+      "bytes": 424
+    },
+    {
+      "path": "stage5_outputs/experiment_B/estimand_metrics.csv",
+      "sha256": "520f0c880a913ffee29c5404f34e17d617c718eeb5c1213772896e64fa4ead52",
+      "bytes": 8109
+    },
+    {
+      "path": "stage5_outputs/experiment_B/gate2_tests.csv",
+      "sha256": "54ad256a7f26026c4f62381d0622f7a57521ed83bdda9695ce20fadbb85931e1",
+      "bytes": 358086
+    },
+    {
+      "path": "stage5_outputs/experiment_B/mixture_results.pdf",
+      "sha256": "61a1b6ed7b59f4997ba1bd4e2187fa7f3bafb718534d4a13c0ab02897745115b",
+      "bytes": 22581
+    },
+    {
+      "path": "stage5_outputs/experiment_B/mixture_results.png",
+      "sha256": "732b9ec7abdf206d4dae4a8d8279fc11a5da48204d255fad01bfd0a134abfda4",
+      "bytes": 111884
+    },
+    {
+      "path": "stage5_outputs/experiment_B/oracle_amendment.md",
+      "sha256": "ed85183f224b46e983aa4fbe44dedb9c776b670746864cae395cdf6b80b0653e",
+      "bytes": 3284
+    },
+    {
+      "path": "stage5_outputs/experiment_B/oracle_resolution.csv",
+      "sha256": "01db9bfd5b1e7b0ed581cba8408ed67dddb775bc0fd50bd7c759909fc80064e8",
+      "bytes": 764
+    },
+    {
+      "path": "stage5_outputs/experiment_B/oracle_risk.csv",
+      "sha256": "adca9eaaaf99e925646b31a4b5356025c28655ecc80a551250cc9e398d93fc7f",
+      "bytes": 1660
+    },
+    {
+      "path": "stage5_outputs/experiment_B/selection_repetitions.csv",
+      "sha256": "e853eb0784f4d06f0ee4cc4d2b69102985586072627fcb446500ed9ffed968aa",
+      "bytes": 39397
+    },
+    {
+      "path": "stage5_outputs/experiment_B/stream_manifest.csv",
+      "sha256": "d7a829b67faf905983c01044da76ac668a9816cf5d01e36225ed084a381972be",
+      "bytes": 2763
+    },
+    {
+      "path": "stage5_outputs/experiment_B/summary.json",
+      "sha256": "82d916cac1dd0e7fca2d7b42c873c4456579330cd37e18319e862cd9d040ad2c",
+      "bytes": 1488
+    },
+    {
+      "path": "stage5_outputs/experiment_B/work_accounting.csv",
+      "sha256": "83244bcdb1ec225f236cd39208dcbe368cc3e67dd97f00186f1a6eb7ebc86462",
+      "bytes": 6379
+    },
+    {
+      "path": "stage5_outputs/experiment_B/work_summary.csv",
+      "sha256": "72b7f08b946e56fbbdeeb40d708190cf484d2fad678f3c68349fe0d1239d2a74",
+      "bytes": 479
+    },
+    {
+      "path": "stage5_outputs/stage5_experiment_report.md",
+      "sha256": "7bbef84d56eadcef5bc7c95c7fb9c6018558d3b4bb2030d8be76d932eff5e23f",
+      "bytes": 6368
+    }
+  ]
+}

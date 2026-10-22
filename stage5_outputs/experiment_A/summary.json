@@ -1,0 +1,9 @@
+{
+  "experiment": "A",
+  "seed": 310000001,
+  "configurations": 117,
+  "meta_repetitions_per_configuration": 5000,
+  "maximum_standardized_theorem_mc_error": 3.0460930922021614,
+  "settings_demonstrating_prevented_false_selection": 71,
+  "status": "PASS"
+}

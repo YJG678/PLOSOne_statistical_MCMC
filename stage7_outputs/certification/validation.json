@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "checks": {
+    "six_effect_sizes": true,
+    "independent_meta_repetitions": true,
+    "certification_units_551": true,
+    "primary_power_at_least_80_percent": true,
+    "null_false_rate_within_declared_error": true,
+    "power_decreases_with_exact_improvement": true,
+    "frozen_radius_matches": true
+  }
+}

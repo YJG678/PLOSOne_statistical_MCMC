@@ -1,0 +1,54 @@
+{
+  "experiment": "B",
+  "oracle_seed": 326000001,
+  "decision_seed": 325000001,
+  "certification_seed": 327000001,
+  "settings": 3,
+  "oracle_batches_per_algorithm_setting": 2,
+  "oracle_paths_per_batch": 10000,
+  "oracle_paths_per_algorithm_setting": 20000,
+  "all_oracles_independently_resolved": true,
+  "minimum_oracle_gap_z_score": 20.113789542588858,
+  "decision_paths_per_algorithm_setting": 22300,
+  "decision_repetitions_per_setting": 100,
+  "decision_repetitions": 300,
+  "matched_target_evaluations_per_path": 3000,
+  "sweeps_per_path": {
+    "local_RWM": 3000,
+    "transport_independence": 3000,
+    "parallel_tempering": 600
+  },
+  "gate2_tests_per_decision": 12,
+  "gate2_paths_per_test": 223,
+  "gate2_familywise_error": 0.01,
+  "gate2_per_test_error": 0.0008333333333333334,
+  "gate2_z_max": 0.1,
+  "naive_false_selections": 0,
+  "naive_exact_95_interval": [
+    0.0,
+    0.01222097469429355
+  ],
+  "gated_false_selections_excluding_aborts": 0,
+  "gated_false_exact_95_interval": [
+    0.0,
+    0.01222097469429355
+  ],
+  "protocol_aborts": 0,
+  "abort_exact_95_interval": [
+    0.0,
+    0.01222097469429355
+  ],
+  "correct_operational_selections": 300,
+  "correct_exact_95_interval": [
+    0.9877790253057065,
+    1.0
+  ],
+  "screening_scope_loss_count": 0,
+  "scope_loss_exact_95_interval": [
+    0.0,
+    0.01222097469429355
+  ],
+  "certification_paths_per_algorithm_setting": 551,
+  "certified_settings": 0,
+  "status": "PASS_MATCHED_WORK_WITH_INDEPENDENT_ORACLE"
+}

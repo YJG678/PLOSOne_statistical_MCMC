@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "false_precision": {
+    "n": 200,
+    "L": 16,
+    "n_epsilon_range": [
+      0.01,
+      100.0
+    ],
+    "p_range": [
+      0.001,
+      0.5
+    ],
+    "contours": [
+      0.05,
+      0.5,
+      0.95
+    ]
+  },
+  "proxy_path": {
+    "relation": "w=p^3",
+    "p_range": [
+      0.0001,
+      0.29999999999999993
+    ]
+  },
+  "certification": {
+    "delta_cert": 0.015,
+    "beta": 0.2,
+    "coefficient": 22.017643324911944,
+    "m_at_g_0.20": 551,
+    "effects": [
+      0.06004756817908402,
+      0.12617737364143905,
+      0.17028081314405757,
+      0.221598352765732,
+      0.23584495588143486
+    ],
+    "observed_powers": [
+      0.0,
+      0.743,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "null_false_certifications": 0,
+    "null_repetitions": 2000
+  }
+}
